@@ -2,21 +2,11 @@
   <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Personal data
+        Paso 1
       </mat-panel-title>
-      <mat-panel-description>
-        Type your name and age
-        <mat-icon>account_circle</mat-icon>
-      </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-form-field>
-      <input matInput placeholder="First name">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput type="number" min="1" placeholder="Age">
-    </mat-form-field>
+    
 
     <mat-action-row>
       <button mat-button color="primary" (click)="nextStep()">Next</button>
