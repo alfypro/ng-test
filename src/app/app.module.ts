@@ -5,7 +5,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 import { SharedModule } from './shared.module';
-
+import { ServicioService } from './api/servicio.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -13,9 +14,10 @@ import { SharedModule } from './shared.module';
   ],
   imports: [
     BrowserModule,
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ServicioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
