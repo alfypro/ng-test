@@ -26,7 +26,7 @@ export class ServicioService {
 
     // to determine the Accept header
     const httpHeaderAccepts: string[] = [
-      '*/*'
+      'application/json'
     ];
     const httpHeaderAcceptSelected: string | undefined = this.selectHeaderAccept(httpHeaderAccepts);
     if (httpHeaderAcceptSelected !== undefined) {
@@ -37,7 +37,7 @@ export class ServicioService {
     const consumes: string[] = [
     ];
 
-    return this.httpClient.get(`${this.basePath}/test`,
+    return this.httpClient.get(`${this.basePath}/test/`,
       {
         params: queryParameters,
         headers: headers,
