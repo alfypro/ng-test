@@ -74,7 +74,6 @@ export class ServicioService {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
-
     return this.httpClient.put(`${this.basePath}/test/`,
       body, {
         params: queryParameters,
@@ -103,23 +102,3 @@ export class ServicioService {
     return mime != null && (jsonMime.test(mime) || mime.toLowerCase() === 'application/json-patch+json');
   }
 }
-
-// import {Injectable} from '@angular/core';
-// import { HttpClient, HttpHeaders } from '@angular/common/http';
-// import {Observable} from 'rxjs/Observable';
-
-// const httpOptions = {
-//     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-// };
-
-// @Injectable()
-// export class ServicioService {
-
-//     constructor(private http: HttpClient) {}
-
-//     // Uses http.get() to load data from a single API endpoint
-//     public getTest(token?: string): Observable<any> {
-//         // tslint:disable-next-line:max-line-length
-//         return this.http.get('https://www.fundacionlengua.com/api/test/?token=2ab9586fc31a8e395fe7834b910fe5b784aa7ad60ed67a7c8a1b905fb4f921da');
-//     }
-// }

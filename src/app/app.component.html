@@ -4,8 +4,8 @@
       fxLayoutGap="10px" class="cabecera">
       <div fxFlex="50" fxFlex.lt-md="noshrink">
         <h1>{{ plantilla.nombre }}</h1>
-        <small>{{ plantilla.descripcion }}</small>
-        <small>{{ alumnoEmail }}</small>
+        <small *ngIf="plantilla.descripcion">{{ plantilla.descripcion }}</small>
+        <small *ngIf="alumnoEmail">{{ alumnoEmail }}</small>
       </div>
       <div fxFlex="50" fxFlex.lt-md="noshrink" class="text-right">
         <img src="https://www.fundacionlengua.com/img/logo_mail.png">
@@ -34,8 +34,8 @@
         </div>
 
         <mat-action-row>
-          <button mat-button mat-raised-button color="blue" *ngIf="i > 0" (click)="prevStep()">Anterior</button>
-          <button mat-button mat-raised-button color="green" (click)="nextStep()">Siguiente</button>
+          <button type="button" mat-button mat-raised-button color="blue" *ngIf="i > 0" (click)="prevStep()">Anterior</button>
+          <button type="button" mat-button mat-raised-button color="green" (click)="nextStep()">Siguiente</button>
         </mat-action-row>
       </mat-expansion-panel>
 
