@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ServicioService } from './api/servicio.service';
 import { Test, Pregunta, Pantilla } from './modelo/modelo';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TestBed } from '@angular/core/testing';
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     public _fb: FormBuilder,
-    private _servicio: ServicioService
+    private _servicio: ServicioService,
+    private _scrollToService: ScrollToService
   ) {
     this.formGroup = this._fb.group([]);
   }
@@ -30,10 +31,12 @@ export class AppComponent implements OnInit {
 
   nextStep() {
     this.step++;
+    this.situarse(`apartado_${this.step}`);
   }
 
   prevStep() {
     this.step--;
+    this.situarse(`apartado_${this.step}`);
   }
 
   ngOnInit() {
@@ -66,6 +69,25 @@ export class AppComponent implements OnInit {
       index++;
     } while (preguntas.length > grupos);
     return partes;
+  }
+
+  situarse(target: string): void {
+    if (target === undefined) {
+      return;
+    }
+    // Configuramos las opciones para hacer el scroll
+    const config: ScrollToConfigOptions = {
+      target: target,
+      offset: -20,
+      duration: 300
+    };
+    // Dejamos un margen para que de tiempo a que se cierre en anterior panel
+    // Si es el maldito Internet Explorer le damos más tiempo
+    if (/msie\s|trident\/|edge\//i.test(window.navigator.userAgent)) {
+      setTimeout(() => this._scrollToService.scrollTo(config), 800);
+    } else {
+      setTimeout(() => this._scrollToService.scrollTo(config), 300);
+    }
   }
 
 }

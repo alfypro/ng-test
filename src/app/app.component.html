@@ -15,14 +15,14 @@
     <mat-expansion-panel *ngFor="let elemento of elementos; let i = index" [expanded]="step === i" (opened)="setStep(i)"
       hideToggle="true">
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title id="apartado_{{ i }}">
           <h2 *ngIf="total > 1">Paso {{ (i + 1) }}</h2>
           <h2 *ngIf="total === 1">Test</h2>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <div *ngFor="let pregunta of elemento" class="bloque-pregunta">
-        <h3>{{ pregunta.enunciado }}</h3>
+        <h3 [innerHTML]="pregunta.enunciado"></h3>
         <section class="options">
           <mat-radio-group [formControlName]="pregunta.id">
             <mat-radio-button class="option" *ngFor="let option of pregunta.respuestas" [value]="option.id">
@@ -33,12 +33,13 @@
       </div>
 
       <mat-action-row>
-        <button mat-button mat-raised-button color="blue" (click)="prevStep()">Anterior</button>
+        <button mat-button mat-raised-button color="blue" *ngIf="i > 0" (click)="prevStep()">Anterior</button>
         <button mat-button mat-raised-button color="green" (click)="nextStep()">Siguiente</button>
-        <button mat-button mat-raised-button color="green" (click)="nextStep()">Terminar</button>
       </mat-action-row>
     </mat-expansion-panel>
 
   </mat-accordion>
 
+  <p><button mat-button mat-raised-button color="green" (click)="finalizar()">Finalizar Test</button></p>
+  
 </div>

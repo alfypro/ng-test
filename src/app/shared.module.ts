@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -79,7 +81,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatTooltipModule,
         MatStepperModule,
         MatMomentDateModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        ScrollToModule.forRoot()
     ],
     providers: [
     ],
@@ -124,7 +127,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatTooltipModule,
         MatStepperModule,
         MatMomentDateModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        ScrollToModule
     ]
 })
 
