@@ -48,6 +48,44 @@ export class ServicioService {
     );
   }
 
+  public putTest(body: any, token: string, finalizar: boolean, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
+    if (body === null || body === undefined) {
+      throw new Error('Required parameter body was null or undefined when calling putApplicationRoleScope.');
+    }
+    if (token === null || token === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling putApplicationRoleScope.');
+    }
+
+    let queryParameters = new HttpParams();
+    if (token !== undefined && token !== null) {
+      queryParameters = queryParameters.set('token', <any>token);
+    }
+    if (finalizar !== undefined && finalizar !== null) {
+      queryParameters = queryParameters.set('finalizar', <any>finalizar);
+    }
+    let headers = this.defaultHeaders;
+
+    // to determine the Accept header
+    const httpHeaderAccepts: string[] = [
+      'application/json'
+    ];
+    const httpHeaderAcceptSelected: string | undefined = this.selectHeaderAccept(httpHeaderAccepts);
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+
+    return this.httpClient.put(`${this.basePath}/test/`,
+      body, {
+        params: queryParameters,
+        withCredentials: null,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress
+      }
+    );
+  }
+
   public selectHeaderAccept(accepts: string[]): string | undefined {
     if (accepts.length === 0) {
       return undefined;
