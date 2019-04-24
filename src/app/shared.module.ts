@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import {
     MatAutocompleteModule,
@@ -77,7 +80,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatToolbarModule,
         MatTooltipModule,
         MatStepperModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        BrowserAnimationsModule,
+        ScrollToModule.forRoot()
     ],
     providers: [
     ],
@@ -121,7 +126,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatToolbarModule,
         MatTooltipModule,
         MatStepperModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        BrowserAnimationsModule,
+        ScrollToModule
     ]
 })
 

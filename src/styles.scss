@@ -1,0 +1,185 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~font-awesome/css/font-awesome.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mat-radio-outer-circle {
+  .mat-radio-checked & {
+    border-color: #3f51b5 !important;
+  }
+}
+
+.mat-radio-inner-circle {
+  background-color: #3f51b5 !important;
+}
+
+.mat-radio-ripple .mat-ripple-element {
+  background-color: rgba(#3f51b5, 0.26) !important;
+}
+
+.ambar,
+.orange {
+  color: #ff902b;
+}
+.azul,
+.blue {
+  color: #23b7e5;
+}
+.gris,
+.grey {
+  color: #999999;
+}
+.rojo,
+.red {
+  color: #ec2121;
+}
+.verde,
+.green {
+  color: #27c24c;
+}
+
+// Estilos para añadir colores
+.mat-tema {
+  background-color: #519ce5;
+  color: #fff !important;
+}
+.mat-blue {
+  background-color: #7db5ec;
+  color: #fff !important;
+}
+.mat-green {
+  background-color: #27c24c;
+  color: #fff !important;
+}
+.mat-red {
+  background-color: #f05050;
+  color: #fff !important;
+}
+
+// desborde
+.ellipsify {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  position: relative;
+}
+// Quitamos la negrita que pone por defecto bootstrap
+label {
+  font-weight: normal;
+  white-space: normal !important;
+}
+// Estilos para el formulario
+.mat-input-element:disabled,
+.mat-checkbox-inner-container {
+  background-color: #f8f8f8;
+}
+.mat-radio-outer-circle {
+  background-color: #fff;
+}
+input.mat-input-element,
+.mat-select,
+textarea.mat-input-element {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  line-height: 28px;
+  min-height: 28px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin: 0px !important;
+  background-color: #fff;
+}
+.mat-form-field-invalid input,
+.mat-form-field-invalid textarea,
+.mat-form-field-invalid .mat-select {
+  border-color: #f44336 !important;
+}
+.mat-form-field-underline {
+  position: relative;
+  bottom: 0;
+  height: 0;
+  width: 0;
+  display: none;
+  background-color: transparent;
+}
+.mat-form-field-infix {
+  padding: 0;
+  width: 150px;
+}
+.mat-form-field-label {
+  transition: all 0.2s ease;
+  left: 8px;
+  top: 20px;
+  // color: #aaa;
+}
+.mat-form-field-should-float .mat-form-field-label {
+  left: 0;
+  top: 16px;
+}
+.mat-form-field-subscript-wrapper {
+  position: relative;
+}
+// Para los botones
+.mat-raised-button {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  font-size: 13px !important;
+  min-width: 10px !important;
+  line-height: 28px !important;
+  padding: 0 12px !important;
+  border-radius: 3px !important;
+}
+a.mat-raised-button {
+  text-decoration: none;
+}
+// Para formularios en linea
+.enlinea {
+  .mat-form-field-wrapper {
+    padding-bottom: 1.25em;
+    margin-bottom: -1.25em;
+  }
+  .mat-form-field-infix {
+    border: none;
+  }
+}
+// Para texto desactivado
+.text-false {
+  color: rgba(0, 0, 0, 0.3);
+}
+// Para que los iconos de los imput aparezcan colocados
+.input-icono-con-label {
+  mat-datepicker-toggle {
+    position: absolute;
+    right: 5px;
+    top: 37px;
+  }
+}
+.input-icono-sin-label {
+  mat-datepicker-toggle {
+    position: absolute;
+    right: 5px;
+    top: 15px;
+  }
+}
+// Estilo para aplicar la altura de los label
+.espacio-label {
+  line-height: 32px;
+  display: block;
+}
+.globo {
+  padding: 1px 4px;
+  background-color: #ccc;
+  color: #fff;
+  border-radius: 50%;
+}
