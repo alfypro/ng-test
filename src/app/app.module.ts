@@ -9,9 +9,16 @@ import { ServicioService } from './api/servicio.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+// Loading
+import { LoaderComponent } from './modelo/loader/loader.component';
+
+// Variables globales
+import { GlobalesService } from './modelo/servicios/globales/globales.service';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +26,12 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule
   ],
-  providers: [ServicioService],
-  bootstrap: [AppComponent]
+  providers: [
+    ServicioService,
+    GlobalesService
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

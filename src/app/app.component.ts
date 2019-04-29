@@ -3,6 +3,7 @@ import { ServicioService } from './api/servicio.service';
 import { Test, Pregunta, Pantilla } from './modelo/modelo';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
+import { GlobalesService } from './modelo/servicios/globales/globales.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     public _fb: FormBuilder,
+    public _global: GlobalesService,
     private _servicio: ServicioService,
     private _scrollToService: ScrollToService
   ) {
@@ -43,8 +45,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     let controles: any = {};
+    this._global.loadingMostrar();
     this._servicio.getTest(this.token).subscribe(
       (test: Test) => {
+        this._global.loadingOcultar();
         console.log(test);
         this.plantilla = test.pantilla;
         this.alumnoEmail = test.alumno.email;
@@ -57,6 +61,7 @@ export class AppComponent implements OnInit {
         console.log(this.elementos);
       },
       error => {
+        this._global.loadingOcultar();
         console.log(error);
       }
     );

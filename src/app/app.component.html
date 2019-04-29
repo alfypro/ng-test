@@ -1,14 +1,15 @@
+<app-loader></app-loader>
 <div class="contenedor">
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxLayoutAlign.lt-sm="start stretch"
       fxLayoutGap="10px" class="cabecera">
       <div fxFlex="50" fxFlex.lt-md="noshrink">
-        <h1>{{ plantilla.nombre }}</h1>
+        <!-- <h1>{{ plantilla.nombre }}</h1> -->
         <small *ngIf="plantilla.descripcion">{{ plantilla.descripcion }}</small>
         <small *ngIf="alumnoEmail">{{ alumnoEmail }}</small>
       </div>
       <div fxFlex="50" fxFlex.lt-md="noshrink" class="text-right">
-        <img src="https://www.fundacionlengua.com/img/logo_mail.png">
+        <!-- <img src="https://www.fundacionlengua.com/img/logo_mail.png"> -->
       </div>
     </div>
 
@@ -41,6 +42,6 @@
 
     </mat-accordion>
 
-    <p><button type="submit" mat-button mat-raised-button color="green">Finalizar Test</button></p>
+    <p *ngIf="elementos.length"><button type="submit" mat-button mat-raised-button color="green">Finalizar Test</button></p>
   </form>
 </div>
