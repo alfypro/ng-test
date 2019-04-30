@@ -4,6 +4,7 @@ import { Test, Pregunta, Pantilla } from './modelo/modelo';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { GlobalesService } from './modelo/servicios/globales/globales.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,9 @@ export class AppComponent implements OnInit {
   total = 0;
   plantilla: Pantilla = { id: '', agrupacion: '', descripcion: '', nombre: '' };
   alumnoEmail = '';
+  finalizado = false;
+  contadorCorrectas: number[];
+  contadorErroneas: number[];
 
   constructor(
     public _fb: FormBuilder,
@@ -36,6 +40,7 @@ export class AppComponent implements OnInit {
   nextStep() {
     this.step++;
     this.situarse(`apartado_${this.step}`);
+    this.guardar(false);
   }
 
   prevStep() {
@@ -50,19 +55,20 @@ export class AppComponent implements OnInit {
       (test: Test) => {
         this._global.loadingOcultar();
         console.log(test);
+        const respuestas = JSON.parse(test.alumno.test);
         this.plantilla = test.pantilla;
         this.alumnoEmail = test.alumno.email;
+        this.finalizado = test.alumno.finalizado === '1' ? true : false;
         test.preguntas.forEach(p => {
-          controles = { ...controles, [p.id]: [{ value: null, disabled: false }, null] };
+          controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
         });
         this.formGroup = this._fb.group(controles);
         this.elementos = this.generarElementos(test.preguntas, Number(test.pantilla.agrupacion));
         this.total = this.elementos.length;
-        console.log(this.elementos);
       },
       error => {
         this._global.loadingOcultar();
-        console.log(error);
+        console.error(error);
       }
     );
   }
@@ -101,10 +107,25 @@ export class AppComponent implements OnInit {
     if (!this.formGroup.valid) {
       return;
     }
-
+    Swal.fire({
+      title: '¡Atención!',
+      text: '¿Seguro que desea completar el cuestionario?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#27c24c',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.guardar(true);
+      }
+    });
+  }
+  guardar(finalizar: boolean): void {
     const body = Object.assign({}, this.formGroup.getRawValue());
     console.log(body);
-    this._servicio.putTest(body, this.token, false).subscribe(
+    this._servicio.putTest(body, this.token, finalizar).subscribe(
       respuesta => {
         console.log(respuesta);
       },

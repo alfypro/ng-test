@@ -1,47 +1,62 @@
 <app-loader></app-loader>
 <div class="contenedor">
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxLayoutAlign.lt-sm="start stretch"
-      fxLayoutGap="10px" class="cabecera">
-      <div fxFlex="50" fxFlex.lt-md="noshrink">
-        <!-- <h1>{{ plantilla.nombre }}</h1> -->
-        <small *ngIf="plantilla.descripcion">{{ plantilla.descripcion }}</small>
-        <small *ngIf="alumnoEmail">{{ alumnoEmail }}</small>
-      </div>
-      <div fxFlex="50" fxFlex.lt-md="noshrink" class="text-right">
-        <!-- <img src="https://www.fundacionlengua.com/img/logo_mail.png"> -->
-      </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxLayoutAlign.lt-sm="start stretch"
+    fxLayoutGap="10px" class="cabecera">
+    <div fxFlex="50" fxFlex.lt-md="noshrink">
+      <!-- <h1>{{ plantilla.nombre }}</h1> -->
+      <small *ngIf="plantilla.descripcion">{{ plantilla.descripcion }}</small>
+      <small *ngIf="alumnoEmail">{{ alumnoEmail }}</small>
     </div>
+    <div fxFlex="50" fxFlex.lt-md="noshrink" class="text-right">
+      <!-- <img src="https://www.fundacionlengua.com/img/logo_mail.png"> -->
+    </div>
+  </div>
 
-    <mat-accordion class="example-headers-align">
-      <mat-expansion-panel *ngFor="let elemento of elementos; let i = index" [expanded]="step === i"
-        (opened)="setStep(i)" hideToggle="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title id="apartado_{{ i }}">
-            <h2 *ngIf="total > 1">Paso {{ (i + 1) }}</h2>
-            <h2 *ngIf="total === 1">Test</h2>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+  <div *ngIf="finalizado">
+    El cuestionario está finalizado.
+    <table *ngFor="let elemento of elementos; let i = index" class="tabla">
+      <tr *ngFor="let pregunta of elemento">
+        <td [innerHTML]="pregunta.enunciado"></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
 
-        <div *ngFor="let pregunta of elemento" class="bloque-pregunta">
-          <h3 [innerHTML]="pregunta.enunciado"></h3>
-          <section class="options">
-            <mat-radio-group [formControlName]="pregunta.id">
-              <mat-radio-button class="option" *ngFor="let option of pregunta.respuestas" [value]="option.id">
-                <div>{{ option.respuesta }}</div>
-              </mat-radio-button>
-            </mat-radio-group>
-          </section>
-        </div>
+  <div *ngIf="!finalizado">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <mat-accordion class="example-headers-align">
+        <mat-expansion-panel *ngFor="let elemento of elementos; let i = index" [expanded]="step === i"
+          (opened)="setStep(i)" hideToggle="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title id="apartado_{{ i }}">
+              <h2 *ngIf="total > 1">Paso {{ (i + 1) }}</h2>
+              <h2 *ngIf="total === 1">Test</h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-        <mat-action-row>
-          <button type="button" mat-button mat-raised-button color="blue" *ngIf="i > 0" (click)="prevStep()">Anterior</button>
-          <button type="button" mat-button mat-raised-button color="green" (click)="nextStep()">Siguiente</button>
-        </mat-action-row>
-      </mat-expansion-panel>
+          <div *ngFor="let pregunta of elemento" class="bloque-pregunta">
+            <h3 [innerHTML]="pregunta.enunciado"></h3>
+            <section class="options">
+              <mat-radio-group [formControlName]="pregunta.id">
+                <mat-radio-button class="option" *ngFor="let option of pregunta.respuestas" [value]="option.id">
+                  <div>{{ option.respuesta }}</div>
+                </mat-radio-button>
+              </mat-radio-group>
+            </section>
+          </div>
 
-    </mat-accordion>
+          <mat-action-row>
+            <button type="button" mat-button mat-raised-button color="blue" *ngIf="i > 0"
+              (click)="prevStep()">Anterior</button>
+            <button type="button" mat-button mat-raised-button color="green" (click)="nextStep()">Siguiente</button>
+          </mat-action-row>
+        </mat-expansion-panel>
 
-    <p *ngIf="elementos.length"><button type="submit" mat-button mat-raised-button color="green">Finalizar Test</button></p>
-  </form>
+      </mat-accordion>
+
+      <p *ngIf="elementos.length"><button type="submit" mat-button mat-raised-button color="green">Finalizar
+          Test</button></p>
+    </form>
+  </div>
 </div>
