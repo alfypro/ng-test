@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   finalizado = false;
   contadorCorrectas: number[];
   contadorErroneas: number[];
+  respuestas = [];
+  puntos = 0;
 
   constructor(
     public _fb: FormBuilder,
@@ -59,9 +61,45 @@ export class AppComponent implements OnInit {
         this.plantilla = test.pantilla;
         this.alumnoEmail = test.alumno.email;
         this.finalizado = test.alumno.finalizado === '1' ? true : false;
-        test.preguntas.forEach(p => {
-          controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
-        });
+        if (this.finalizado) {
+          test.preguntas.forEach((p, i) => {
+            this.respuestas[p.id] = {
+              correcta: '',
+              respuesta: '',
+              acierto: false
+            };
+            const correcta = p.respuestas.filter((x: any) => x.esCorrecta === '1');
+            if (correcta.length) {
+              this.respuestas[p.id].correcta = correcta[0].respuesta;
+            }
+            if (respuestas[p.id] !== undefined && respuestas[p.id] !== null) {
+              // console.log(respuestas[p.id]);
+              const respuesta = p.respuestas.filter((x: any) => x.id === respuestas[p.id]);
+              if (respuesta.length) {
+                this.respuestas[p.id].respuesta = respuesta[0].respuesta;
+              }
+            }
+            if (this.respuestas[p.id].correcta === this.respuestas[p.id].respuesta) {
+              this.respuestas[p.id].acierto = true;
+              this.puntos += Number(p.valor);
+            }
+            // console.log(p.respuestas.filter((x: any) => x.esCorrecta === '1')[0].respuesta);
+            // console.log(i);
+            // console.log(respuestas);
+            // console.log(respuestas[i]);
+            // console.log(p.respuestas.filter((x: any) => x.id === respuestas[i])[0].respuesta);
+            // this.respuestas[p.id] =
+            // controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
+          });
+          // console.log(this.respuestas);
+        } else {
+          test.preguntas.forEach(p => {
+            controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
+          });
+        }
+        // test.preguntas.forEach(p => {
+        //   controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
+        // });
         this.formGroup = this._fb.group(controles);
         this.elementos = this.generarElementos(test.preguntas, Number(test.pantilla.agrupacion));
         this.total = this.elementos.length;

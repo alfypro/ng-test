@@ -3,23 +3,26 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxLayoutAlign.lt-sm="start stretch"
     fxLayoutGap="10px" class="cabecera">
     <div fxFlex="50" fxFlex.lt-md="noshrink">
-      <!-- <h1>{{ plantilla.nombre }}</h1> -->
+      <h1>{{ plantilla.nombre }}</h1>
       <small *ngIf="plantilla.descripcion">{{ plantilla.descripcion }}</small>
       <small *ngIf="alumnoEmail">{{ alumnoEmail }}</small>
     </div>
     <div fxFlex="50" fxFlex.lt-md="noshrink" class="text-right">
-      <!-- <img src="https://www.fundacionlengua.com/img/logo_mail.png"> -->
+      <img src="https://www.fundacionlengua.com/img/logo_mail.png">
     </div>
   </div>
 
   <div *ngIf="finalizado">
-    El cuestionario está finalizado.
-    <table *ngFor="let elemento of elementos; let i = index" class="tabla">
-      <tr *ngFor="let pregunta of elemento">
-        <td [innerHTML]="pregunta.enunciado"></td>
-        <td></td>
-        <td></td>
-      </tr>
+    Total puntos: {{puntos}}
+    <table class="tabla">
+      <ng-container *ngFor="let elemento of elementos; let i = index">
+        <tr *ngFor="let pregunta of elemento; let n = index">
+          <td>{{pregunta.orden}}</td>
+          <td [innerHTML]="pregunta.enunciado"></td>
+          <td>{{respuestas[pregunta.id].correcta}}</td>
+          <td>{{respuestas[pregunta.id].respuesta}}</td>
+        </tr>
+      </ng-container>
     </table>
   </div>
 
