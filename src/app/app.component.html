@@ -1,11 +1,14 @@
 <app-loader></app-loader>
-<div class="contenedor">
+<div class="contenedor" *ngIf="cargado === 1">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxLayoutAlign.lt-sm="start stretch"
     fxLayoutGap="10px" class="cabecera">
     <div fxFlex="50" fxFlex.lt-md="noshrink">
       <h1>{{ plantilla.nombre }}</h1>
-      <small *ngIf="plantilla.descripcion">{{ plantilla.descripcion }}</small>
-      <small *ngIf="alumnoEmail">{{ alumnoEmail }}</small>
+      <div *ngIf="plantilla.descripcion"><small><strong>{{ plantilla.descripcion }}</strong></small></div>
+      <div *ngIf="alumnoEmail"><small><strong>Email: </strong>{{ alumnoEmail }}</small></div>
+      <div *ngIf="alumnoReferencia"><small><strong>Referencia: </strong>{{ alumnoReferencia }}</small></div>
+      <div *ngIf="alumnoFechaHora"><small><strong>Fecha de realización:
+          </strong>{{ alumnoFechaHora | date: 'dd/MM/yyyy hh:mm:ss' }}</small></div>
     </div>
     <div fxFlex="50" fxFlex.lt-md="noshrink" class="text-right">
       <img src="https://www.fundacionlengua.com/img/logo_mail.png">
@@ -13,14 +16,20 @@
   </div>
 
   <div *ngIf="finalizado">
-    Total puntos: {{puntos}}
+    <p><strong>Total puntos: {{puntos}}</strong></p>
     <table class="tabla">
+      <tr>
+        <th>nº</th>
+        <th>pregunta</th>
+        <th>correcta</th>
+        <th>respuesta</th>
+      </tr>
       <ng-container *ngFor="let elemento of elementos; let i = index">
-        <tr *ngFor="let pregunta of elemento; let n = index">
+        <tr *ngFor="let pregunta of elemento; let n = index" [class]="'fila-' + n">
           <td>{{pregunta.orden}}</td>
           <td [innerHTML]="pregunta.enunciado"></td>
           <td>{{respuestas[pregunta.id].correcta}}</td>
-          <td>{{respuestas[pregunta.id].respuesta}}</td>
+          <td [class]="'acierto-' + respuestas[pregunta.id].acierto">{{respuestas[pregunta.id].respuesta}}</td>
         </tr>
       </ng-container>
     </table>
@@ -62,4 +71,7 @@
           Test</button></p>
     </form>
   </div>
+</div>
+<div class="contenedor" *ngIf="cargado === 2">
+  ERROR de acceso...
 </div>

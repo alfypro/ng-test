@@ -4,6 +4,7 @@ export interface Alumno {
     idTest: string;
     finalizado: string;
     email: string;
+    referencia: string;
     fechaHora: string;
     test: string;
 }

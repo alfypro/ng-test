@@ -8,6 +8,7 @@ import { SharedModule } from './shared.module';
 import { ServicioService } from './api/servicio.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 // Loading
 import { LoaderComponent } from './modelo/loader/loader.component';
@@ -24,7 +25,8 @@ import { GlobalesService } from './modelo/servicios/globales/globales.service';
     BrowserModule,
     SharedModule.forRoot(),
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot([]),
   ],
   providers: [
     ServicioService,

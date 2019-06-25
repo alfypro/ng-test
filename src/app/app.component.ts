@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ServicioService } from './api/servicio.service';
 import { Test, Pregunta, Pantilla } from './modelo/modelo';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -14,27 +15,32 @@ import Swal from 'sweetalert2';
 export class AppComponent implements OnInit {
 
   public formGroup: FormGroup;
-  token = '2ab9586fc31a8e395fe7834b910fe5b784aa7ad60ed67a7c8a1b905fb4f921da';
+  token = '';
+  // token = '2ab9586fc31a8e395fe7834b910fe5b784aa7ad60ed67a7c8a1b905fb4f921da';
   step = 0;
   elementos: Array<Pregunta[]> = [];
   total = 0;
   plantilla: Pantilla = { id: '', agrupacion: '', descripcion: '', nombre: '' };
   alumnoEmail = '';
+  alumnoReferencia = '';
+  alumnoFechaHora = '';
   finalizado = false;
   contadorCorrectas: number[];
   contadorErroneas: number[];
   respuestas = [];
   puntos = 0;
+  cargado = 0;
 
   constructor(
     public _fb: FormBuilder,
     public _global: GlobalesService,
     private _servicio: ServicioService,
-    private _scrollToService: ScrollToService
+    private _scrollToService: ScrollToService,
+    private _route: ActivatedRoute
   ) {
     this.formGroup = this._fb.group([]);
+    // this.token = this._route.snapshot.paramMap.get('token');
   }
-
   setStep(index: number) {
     this.step = index;
   }
@@ -51,6 +57,17 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._route.queryParams.subscribe(params => {
+      this.token = params['token'];
+      if (this.token !== null && this.token !== undefined) {
+        this.cargarDatos();
+      } else {
+        this.cargado = 2;
+      }
+    });
+  }
+
+  cargarDatos(): void {
     let controles: any = {};
     this._global.loadingMostrar();
     this._servicio.getTest(this.token).subscribe(
@@ -60,6 +77,8 @@ export class AppComponent implements OnInit {
         const respuestas = JSON.parse(test.alumno.test);
         this.plantilla = test.pantilla;
         this.alumnoEmail = test.alumno.email;
+        this.alumnoReferencia = test.alumno.referencia;
+        this.alumnoFechaHora = test.alumno.fechaHora;
         this.finalizado = test.alumno.finalizado === '1' ? true : false;
         if (this.finalizado) {
           test.preguntas.forEach((p, i) => {
@@ -73,39 +92,29 @@ export class AppComponent implements OnInit {
               this.respuestas[p.id].correcta = correcta[0].respuesta;
             }
             if (respuestas[p.id] !== undefined && respuestas[p.id] !== null) {
-              // console.log(respuestas[p.id]);
               const respuesta = p.respuestas.filter((x: any) => x.id === respuestas[p.id]);
               if (respuesta.length) {
                 this.respuestas[p.id].respuesta = respuesta[0].respuesta;
               }
             }
-            if (this.respuestas[p.id].correcta === this.respuestas[p.id].respuesta) {
+            if (this.respuestas[p.id].correcta === this.respuestas[p.id].respuesta && this.respuestas[p.id].respuesta !== '') {
               this.respuestas[p.id].acierto = true;
               this.puntos += Number(p.valor);
             }
-            // console.log(p.respuestas.filter((x: any) => x.esCorrecta === '1')[0].respuesta);
-            // console.log(i);
-            // console.log(respuestas);
-            // console.log(respuestas[i]);
-            // console.log(p.respuestas.filter((x: any) => x.id === respuestas[i])[0].respuesta);
-            // this.respuestas[p.id] =
-            // controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
           });
-          // console.log(this.respuestas);
         } else {
           test.preguntas.forEach(p => {
             controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
           });
         }
-        // test.preguntas.forEach(p => {
-        //   controles = { ...controles, [p.id]: [{ value: (respuestas[p.id] !== undefined && respuestas[p.id] !== null ? respuestas[p.id] : null), disabled: false }, null] };
-        // });
         this.formGroup = this._fb.group(controles);
         this.elementos = this.generarElementos(test.preguntas, Number(test.pantilla.agrupacion));
         this.total = this.elementos.length;
+        this.cargado = 1;
       },
       error => {
         this._global.loadingOcultar();
+        this.cargado = -1;
         console.error(error);
       }
     );
@@ -157,12 +166,12 @@ export class AppComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.guardar(true);
+        location.reload();
       }
     });
   }
   guardar(finalizar: boolean): void {
     const body = Object.assign({}, this.formGroup.getRawValue());
-    console.log(body);
     this._servicio.putTest(body, this.token, finalizar).subscribe(
       respuesta => {
         console.log(respuesta);
