@@ -48,7 +48,7 @@
           </mat-expansion-panel-header>
 
           <div *ngFor="let pregunta of elemento" class="bloque-pregunta">
-            <h3 [innerHTML]="pregunta.enunciado"></h3>
+            <h3 [innerHTML]="pregunta.orden + ' - ' + pregunta.enunciado"></h3>
             <section class="options">
               <mat-radio-group [formControlName]="pregunta.id">
                 <mat-radio-button class="option" *ngFor="let option of pregunta.respuestas" [value]="option.id">
@@ -73,5 +73,5 @@
   </div>
 </div>
 <div class="contenedor" *ngIf="cargado === 2">
-  ERROR de acceso...
+  {{mensaje}}
 </div>

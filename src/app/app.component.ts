@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   public formGroup: FormGroup;
   token = '';
   // token = '2ab9586fc31a8e395fe7834b910fe5b784aa7ad60ed67a7c8a1b905fb4f921da';
+  // https://www.fundacionlengua.com/admin/index.php?tipo=articulos&opcion=editar&ent_id=74&filtro=1&opfiltro=5&q_iniA=2019-07-07+00%3A00%3A00&q_iniB=2019-07-09+00%3A00%3A00&q_secciones=499%2C501%2C503%2C505#
   step = 0;
   elementos: Array<Pregunta[]> = [];
   total = 0;
@@ -29,7 +30,8 @@ export class AppComponent implements OnInit {
   contadorErroneas: number[];
   respuestas = [];
   puntos = 0;
-  cargado = 0;
+  cargado = 2;
+  mensaje = 'Cargando...';
 
   constructor(
     public _fb: FormBuilder,
@@ -61,8 +63,9 @@ export class AppComponent implements OnInit {
       this.token = params['token'];
       if (this.token !== null && this.token !== undefined) {
         this.cargarDatos();
-      } else {
+      } else if (this.token !== undefined) {
         this.cargado = 2;
+        this.mensaje = this.token + 'ERROR de acceso...';
       }
     });
   }
@@ -74,6 +77,11 @@ export class AppComponent implements OnInit {
       (test: Test) => {
         this._global.loadingOcultar();
         console.log(test);
+        if (test === null) {
+          this.mensaje = 'ERROR! La clave del cuestionario no es válida...';
+          this.cargado = 2;
+          return;
+        }
         const respuestas = JSON.parse(test.alumno.test);
         this.plantilla = test.pantilla;
         this.alumnoEmail = test.alumno.email;
@@ -114,7 +122,8 @@ export class AppComponent implements OnInit {
       },
       error => {
         this._global.loadingOcultar();
-        this.cargado = -1;
+        this.mensaje = 'ERROR! La clave del cuestionario no es válida...';
+        this.cargado = 2;
         console.error(error);
       }
     );
@@ -128,6 +137,14 @@ export class AppComponent implements OnInit {
       preguntas = preguntas.slice(grupos);
       index++;
     } while (preguntas.length > grupos);
+    if (preguntas.length > 0) {
+      partes[index] = preguntas.slice(0, grupos);
+    }
+    // console.log(preguntas.length + ' - ' + index + ' - ' + grupos);
+    // for (let i = index; i < preguntas.length; i++) {
+    //   partes[index + 1] = preguntas.slice(0, grupos);
+    //   preguntas = preguntas.slice(grupos);
+    // }
     return partes;
   }
 
